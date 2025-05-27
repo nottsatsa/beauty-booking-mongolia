@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Calendar, Clock, Phone, MapPin, Instagram, Star } from "lucide-react";
+import { Calendar, Clock, Phone, MapPin, Instagram, Star, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 const services = [
   {
@@ -247,11 +247,19 @@ const Index = () => {
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-rose-500 rounded-full flex items-center justify-center">
-              <Clock className="w-5 h-5 text-white" />
+          <div className="flex items-center space-x-4">
+            <Link to="/">
+              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-800">
+                <ArrowLeft className="w-4 h-4 mr-1" />
+                Буцах
+              </Button>
+            </Link>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-rose-500 rounded-full flex items-center justify-center">
+                <Clock className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-gray-800">Нараа Beauty Salon</span>
             </div>
-            <span className="text-xl font-bold text-gray-800">TimeBook</span>
           </div>
           <Button 
             onClick={() => setShowBookingForm(true)}
