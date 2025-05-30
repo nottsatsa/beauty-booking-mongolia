@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Index from "./pages/Index";
 import AdminBookings from "./pages/AdminBookings";
+import SalonSignUp from "./pages/SalonSignUp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<MainPage />} />
           <Route path="/naraa-salon" element={<Index />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
+          <Route path="/salon-signup" element={<SalonSignUp />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
