@@ -261,12 +261,19 @@ const Index = () => {
               <span className="text-xl font-bold text-gray-800">Нараа Beauty Salon</span>
             </div>
           </div>
-          <Button 
-            onClick={() => setShowBookingForm(true)}
-            className="bg-rose-500 hover:bg-rose-600 text-white"
-          >
-            Цаг захиалах
-          </Button>
+          <div className="flex gap-2">
+            <Link to="/admin/bookings">
+              <Button variant="outline" size="sm" className="text-gray-600 hover:text-gray-800">
+                Захиалга удирдах
+              </Button>
+            </Link>
+            <Button 
+              onClick={() => setShowBookingForm(true)}
+              className="bg-rose-500 hover:bg-rose-600 text-white"
+            >
+              Цаг захиалах
+            </Button>
+          </div>
         </div>
       </header>
 
