@@ -1,12 +1,14 @@
-
 import { useState } from "react";
-import { Calendar, Clock, Phone, User, Filter, Search, CheckCircle, XCircle, ArrowLeft, Eye } from "lucide-react";
+import { Calendar, Clock, Phone, User, Filter, Search, CheckCircle, XCircle, ArrowLeft, Eye, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 
@@ -81,6 +83,13 @@ const AdminBookings = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  const [isAddServiceOpen, setIsAddServiceOpen] = useState(false);
+  const [newService, setNewService] = useState({
+    name: "",
+    price: "",
+    duration: "",
+    description: ""
+  });
 
   const filteredBookings = bookings.filter(booking => {
     const matchesSearch = booking.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -104,6 +113,25 @@ const AdminBookings = () => {
   const weeklyRevenue = bookings
     .filter(b => b.status === "completed")
     .reduce((sum, b) => sum + parseInt(b.price.replace(/[₮,]/g, "")), 0);
+
+  const handleAddService = () => {
+    if (!newService.name || !newService.price) {
+      toast({
+        title: "Алдаа",
+        description: "Үйлчилгээний нэр болон үнийг заавал бөглөнө үү",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Үйлчилгээ нэмэгдлээ",
+      description: `${newService.name} үйлчилгээ амжилттай нэмэгдлээ`,
+    });
+
+    setNewService({ name: "", price: "", duration: "", description: "" });
+    setIsAddServiceOpen(false);
+  };
 
   if (selectedBooking) {
     return (
@@ -208,6 +236,78 @@ const AdminBookings = () => {
               <span className="text-xl font-bold text-gray-800">Захиалгын удирдлага</span>
             </div>
           </div>
+          
+          <Dialog open={isAddServiceOpen} onOpenChange={setIsAddServiceOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-rose-500 hover:bg-rose-600 text-white">
+                <Plus className="w-4 h-4 mr-2" />
+                Үйлчилгээ нэмэх
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Шинэ үйлчилгээ нэмэх</DialogTitle>
+                <DialogDescription>
+                  Салонд шинэ үйлчилгээ нэмэхийн тулд дараах мэдээллийг бөглөнө үү.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Нэр
+                  </Label>
+                  <Input
+                    id="name"
+                    value={newService.name}
+                    onChange={(e) => setNewService(prev => ({...prev, name: e.target.value}))}
+                    className="col-span-3"
+                    placeholder="Үйлчилгээний нэр"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="price" className="text-right">
+                    Үнэ
+                  </Label>
+                  <Input
+                    id="price"
+                    value={newService.price}
+                    onChange={(e) => setNewService(prev => ({...prev, price: e.target.value}))}
+                    className="col-span-3"
+                    placeholder="Үнэ (₮)"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="duration" className="text-right">
+                    Хугацаа
+                  </Label>
+                  <Input
+                    id="duration"
+                    value={newService.duration}
+                    onChange={(e) => setNewService(prev => ({...prev, duration: e.target.value}))}
+                    className="col-span-3"
+                    placeholder="Хугацаа (минут)"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="description" className="text-right">
+                    Тайлбар
+                  </Label>
+                  <Textarea
+                    id="description"
+                    value={newService.description}
+                    onChange={(e) => setNewService(prev => ({...prev, description: e.target.value}))}
+                    className="col-span-3"
+                    placeholder="Үйлчилгээний тайлбар"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit" onClick={handleAddService}>
+                  Үйлчилгээ нэмэх
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </header>
 
